@@ -18,7 +18,6 @@ var (
 	fileFlag    = flag.String("f", "", "Provide pre-written mapping file")
 	genFlag     = flag.String("g", "", "Write a mapping file to this path")
 	patternFlag = flag.String("p", "*", "*.go - pattern for Go source files")
-	verboseFlag = flag.Bool("v", false, "Enable verbose logging of actions")
 	yesFlag     = flag.Bool("y", false, "Complete renaming after closing editor")
 )
 
@@ -37,7 +36,7 @@ func main() {
 
 	var mappingFile *os.File
 	if *fileFlag == "" {
-		tmpFile, err := os.CreateTemp("", "mass-rename-*.list")
+		tmpFile, err := os.CreateTemp("", "*.mass-rename")
 		if err != nil {
 			fmt.Println("[Error] Failed to create temporary file:", err)
 			os.Exit(1)
@@ -68,11 +67,17 @@ func main() {
 		fmt.Println("[Error] Failed to parse map file:", err)
 		os.Exit(1)
 	}
-	if *verboseFlag {
-		for _, i := range renameMap {
-			fmt.Printf("'%s' => '%s'\n", i.Old, i.New)
-		}
+
+	if len(renameMap) == 0 {
+		fmt.Println("No files to rename")
+		return
 	}
+
+	fmt.Println("Renaming:")
+	for _, i := range renameMap {
+		fmt.Printf("- '%s' => '%s'\n", i.Old, i.New)
+	}
+	fmt.Println()
 
 	// possible ask user to continue
 	if !*yesFlag {

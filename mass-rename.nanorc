@@ -1,0 +1,9 @@
+## Syntax highlighting for mass-rename.
+
+## Original author:  MrMelon54
+## License:  MIT (public domain)
+
+syntax mass-rename "\.mass-rename$"
+comment ""
+
+color brightgreen " => "
