@@ -49,6 +49,12 @@ func main() {
 
 		genWalkList(mappingFile)
 		openEditor(mappingFile)
+
+		_, err = tmpFile.Seek(0, io.SeekStart)
+		if err != nil {
+			fmt.Println("[Error] Failed to seek to start:", err)
+			os.Exit(1)
+		}
 	} else {
 		create, err := os.Open(*fileFlag)
 		if err != nil {
